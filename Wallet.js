@@ -21,4 +21,4 @@ class Wallet {
     }
 }
 
-const wallet = new Wallet(400);
+// const wallet = new Wallet(400);

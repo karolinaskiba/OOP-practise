@@ -1,0 +1,34 @@
+class Game {
+    constructor(startGame) {
+        this.stats = new Statistics();
+        this.wallet = new Wallet(startGame);
+
+        let self = this;
+        document.getElementById('start').addEventListener('click', self.startGame);
+        this.spanWallet = document.querySelector('.panel span.wallet');
+        this.boards = document.querySelectorAll('.color');
+        this.inputBid = document.getElementById('bid');
+        this.spanResult = document.querySelector('.score span.result');
+        this.spanWins = document.querySelector('.score span.win');
+        this.spanGames = document.querySelector('.score span.number');
+        this.spanLosses = document.querySelector('.score span.loss');
+        this.render();
+    }
+    render(colors = ['gray', 'gray', 'gray'], money = this.wallet.getWalletValue(), result = '', stats = [0, 0, 0], bid = 0, wonMoney = 0) {
+        this.boards.forEach(
+            (box, index) => { box.style.backgroundColor = colors[index] });
+        if (result) {
+            result = `wygrałes ${wonMoney}`;
+        } else if (!result && result != '') {
+            result = `przegrałeś  ${bid}`
+        }
+    }
+        this.spanResult.textContent = result;
+this.spanWallet.textContent = money;
+this.spanGames.textContent = stats[0];
+this.spanWins.textContent = stats[1];
+this.spanLosses.textContent = stats[2];
+
+    }
+startGame() { }
+}
