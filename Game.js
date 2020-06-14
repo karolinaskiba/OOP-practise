@@ -27,6 +27,7 @@ class Game {
         this.spanGames.textContent = stats[0];
         this.spanWins.textContent = stats[1];
         this.spanLosses.textContent = stats[2];
+        this.inputBid.value = '';
 
     }
     startGame() {
