@@ -3,8 +3,7 @@ class Game {
         this.stats = new Statistics();
         this.wallet = new Wallet(startGame);
 
-        let self = this;
-        document.getElementById('start').addEventListener('click', self.startGame);
+        document.getElementById('start').addEventListener('click', this.startGame.bind(this));
         this.spanWallet = document.querySelector('.panel span.wallet');
         this.boards = document.querySelectorAll('.color');
         this.inputBid = document.getElementById('bid');
@@ -18,17 +17,31 @@ class Game {
         this.boards.forEach(
             (box, index) => { box.style.backgroundColor = colors[index] });
         if (result) {
-            result = `wygrałes ${wonMoney}`;
-        } else if (!result && result != '') {
+            result = `wygrałes ${wonMoney} PLN.`;
+        } else if (!result && result !== '') {
             result = `przegrałeś  ${bid}`
         }
-    }
+
         this.spanResult.textContent = result;
-this.spanWallet.textContent = money;
-this.spanGames.textContent = stats[0];
-this.spanWins.textContent = stats[1];
-this.spanLosses.textContent = stats[2];
+        this.spanWallet.textContent = money;
+        this.spanGames.textContent = stats[0];
+        this.spanWins.textContent = stats[1];
+        this.spanLosses.textContent = stats[2];
 
     }
-startGame() { }
+    startGame() {
+        if (this.inputBid.value < 1) { return alert('Kwota którą chcesz grać jest zbyt mała!!!') }
+        const bid = Math.floor(this.inputBid.value);
+
+        if (!this.wallet.checkCanPlay(bid)) { return alert('masz za mało środków lub została podania niewłaśćiwa wartość') }
+
+        this.wallet.changeWallet(bid, '-');
+        this.draw = new Draw();
+        const colors = this.draw.getDrawResult();
+        const win = Result.checkhWin(colors);
+        const wonMoney = Result.moneyWonInGame(win, bid);
+        this.wallet.changeWallet(wonMoney);
+        this.stats.addGameToStats(win, bid);
+        this.render(colors, this.wallet.getWalletValue(), win, this.stats.showGameStats(), bid, wonMoney);
+    }
 }
